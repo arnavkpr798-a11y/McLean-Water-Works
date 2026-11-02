@@ -654,17 +654,18 @@ export class Hub extends EventEmitter {
       streamMode: ['auto', 'direct', 'relay'],
       playbackEngine: ['auto', 'native', 'upnp'],
     };
+    const next = {};
+    for (const [k, values] of Object.entries(allowed)) {
+      if (patch[k] === undefined) continue;
+      if (!values.includes(patch[k])) throw new HttpError(400, `Invalid value for ${k}`);
+      next[k] = patch[k];
+    }
+    if (patch.activeSpeakerId !== undefined) {
+      if (patch.activeSpeakerId && !this.speakers.has(patch.activeSpeakerId)) throw new HttpError(404, 'Speaker not found');
+      next.activeSpeakerId = patch.activeSpeakerId;
+    }
     this.store.update((s) => {
-      for (const [k, values] of Object.entries(allowed)) {
-        if (patch[k] !== undefined) {
-          if (!values.includes(patch[k])) throw new HttpError(400, `Invalid value for ${k}`);
-          s.settings[k] = patch[k];
-        }
-      }
-      if (patch.activeSpeakerId !== undefined) {
-        if (patch.activeSpeakerId && !this.speakers.has(patch.activeSpeakerId)) throw new HttpError(404, 'Speaker not found');
-        s.settings.activeSpeakerId = patch.activeSpeakerId;
-      }
+      Object.assign(s.settings, next);
     });
     this.emit('settings');
   }

@@ -2,6 +2,7 @@
 import http from 'node:http';
 import fs from 'node:fs';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { config, ROOT, VERSION } from './config.js';
 import { Store } from './store.js';
 import { Hub } from './hub.js';
@@ -142,7 +143,7 @@ export async function createServer({ store: givenStore } = {}) {
   };
 }
 
-const isMain = process.argv[1] && path.resolve(process.argv[1]) === path.resolve(new URL(import.meta.url).pathname);
+const isMain = process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url);
 if (isMain) {
   const app = await createServer();
   try {
