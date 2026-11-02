@@ -1,0 +1,30 @@
+{
+  "name": "airwave",
+  "version": "1.0.0",
+  "description": "Airwave: a home hub and phone app for Bose SoundTouch speakers. TuneIn radio, presets, favorites, Bluetooth/AUX, multi-room, alarms and sleep timers, with no Bose cloud required.",
+  "type": "module",
+  "private": true,
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.17"
+  },
+  "main": "server/index.js",
+  "bin": {
+    "airwave": "server/index.js"
+  },
+  "scripts": {
+    "start": "node server/index.js",
+    "demo": "node dev/demo.js",
+    "test": "node --test --test-concurrency=1 test/unit.test.js test/e2e.test.js",
+    "vendor": "node scripts/vendor.js"
+  },
+  "dependencies": {
+    "fast-xml-parser": "5.11.2",
+    "multicast-dns": "7.2.5",
+    "ws": "8.22.1"
+  },
+  "devDependencies": {
+    "htm": "3.1.1",
+    "preact": "10.24.3"
+  }
+}

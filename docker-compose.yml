@@ -1,0 +1,16 @@
+# Run with:  docker compose up -d
+# Host networking is required so the hub can discover speakers (multicast)
+# and so speakers can call back into it. Works on Linux (Raspberry Pi, NAS).
+services:
+  airwave:
+    build: .
+    container_name: airwave
+    network_mode: host
+    restart: unless-stopped
+    environment:
+      - PORT=8095
+      - TZ=America/New_York          # your time zone, for alarms
+      # - SPEAKERS=192.168.1.40      # optional: speaker IPs if discovery can't find them
+      # - PUBLIC_ADDRESS=192.168.1.10 # optional: this machine's LAN IP
+    volumes:
+      - ./data:/data

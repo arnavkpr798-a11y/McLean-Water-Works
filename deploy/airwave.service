@@ -1,0 +1,18 @@
+# systemd unit for Raspberry Pi / Linux. Installed by deploy/install-linux.sh
+[Unit]
+Description=Airwave SoundTouch hub
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=__USER__
+WorkingDirectory=__DIR__
+Environment=PORT=8095
+Environment=DATA_DIR=__DIR__/data
+ExecStart=__NODE__ __DIR__/server/index.js
+Restart=always
+RestartSec=3
+
+[Install]
+WantedBy=multi-user.target
